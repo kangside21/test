@@ -21,7 +21,11 @@
       params.code = "A";
       params.name = "테스트";
 
-      common.ajax('/search', params, "get");
+      params.list = ['asdad', "vsvsdvsv"];
+      params.kang = {'zxc' : "zcc", 'qwe' : "qweqwe"};
+      params.kang2 = {'zxc' : "zcc", 'qwe' : "qweqwe"};
+
+      common.ajax('/search11', params, "post");
       
     });
   })();

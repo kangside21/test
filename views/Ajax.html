@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="js/common.js" charset="utf-8"></script>
+    <title>Ajax/JSON</title>
+   
+    <script language="javascript">
+    window.onload = function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', './data.json', true);
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xhr.responseType = 'json';        
+        xhr.onreadystatechange = function () {
+        //  if (request.readyState == 4 && request.status == 200) 서버 사용시
+            if (this.readyState == this.DONE) {
+                xhr.response.forEach(function(data, index){
+                    console.log(data);
+                    
+                    //테이블 생성
+                    var tr_arr=document.createElement('tr');
+                    
+                    //1td 체크박스 생성
+                    var td_arr1=document.createElement('td');
+                    checkElement=document.createElement('input');
+                    
+                    checkElement.setAttribute('type', 'checkbox');
+                    checkElement.className='checkclass'
+                    
+                    checkElement.addEventListener('click', function(event){ // click 이벤트 발생시, 두번째 인자의 함수가 실행
+                   
+                    //체크박스 체크 여부 
+                    var checkList = document.querySelector('#table').querySelectorAll('tr input[class=checkclass]');                   
+                    var checkLength = 0;
+                    var uncheckList = 0;
+                    for (var nIndex=0; nIndex < checkList.length; nIndex++) {
+                        if (checkList[nIndex].checked) checkLength++;
+                        if (checkList[nIndex].disabled) uncheckList++;                        
+                    }
+                      
+                    var allLength = checkList.length-uncheckList
+    
+                    if (allLength == checkLength) document.querySelector('#allCheck').checked = true;
+                    else document.querySelector('#allCheck').checked = false;
+                    });
+                    
+                    document.querySelector('#allCheck').checked = false;
+
+                    td_arr1.appendChild(checkElement);
+                    tr_arr.appendChild(td_arr1);
+                    
+                    //2td id 생성
+                    var td_arr2=document.createElement('td');
+                    td_arr2.id='td22'+index;
+                    td_arr2.className='td2'
+                    td_arr2.innerText=data.id;
+                    tr_arr.appendChild(td_arr2);                                  
+                    
+                    //3td name 생성                    
+                    var td_arr3=document.createElement('td');
+                    td_arr3.id='td33'+index;
+                    td_arr3.innerText=data.name;                    
+                    tr_arr.appendChild(td_arr3);
+                    
+                    //4td 형태 생성                    
+                    var td_arr4=document.createElement('td');
+                    td_arr4.id='td44'+index;
+                    td_arr4.innerText=data.type; 
+                    tr_arr.appendChild(td_arr4);
+                    
+                    //5td 삭제여부 체크박스 및 Disable 구문                    
+                    var td_arr5=document.createElement('td');
+                    YnElement=document.createElement('input');
+                    YnElement.setAttribute('type', 'checkbox');
+                    YnElement.id='td5'+index;
+                    YnElement.className='Ynclass'
+                                                           
+                    if(data.delYn == 'N'){
+                        checkElement.disabled=true;    
+                        YnElement.disabled=true;
+                    }
+                    else {
+                        YnElement.disabled=false;
+                        YnElement.checked=true;
+                    }
+                        
+                    td_arr5.appendChild(YnElement);                    
+                    tr_arr.appendChild(td_arr5);
+                    
+                    //6td 수정 ID
+                    var td_arr6=document.createElement('td');
+                    input=document.createElement('input');
+                    input.setAttribute('type', 'text');
+                    input.setAttribute('style', 'width:100px')
+                    input.className='inputbox';
+                    input.id='td66';
+                    input.value=data.id;
+                    td_arr6.appendChild(input); 
+                    tr_arr.appendChild(td_arr6);
+                    
+                    //7td 수정 버튼 생성                                        
+                    var td_arr7=document.createElement('td');
+                    but=document.createElement('input');
+                    but.setAttribute('type', 'button');
+                    but.setAttribute('style', 'width:50px');
+                    but.value = '수정';
+                    but.className='but';
+                    td_arr7.id='td77';
+                    
+                    but.addEventListener('click', function(event){ // click 이벤트 발생시, 두번째 인자의 함수가 실행
+                        var temp = this.parentNode.parentNode.childNodes[5].querySelector('input[id=td66]').value;
+                        var tbl=document.getElementById('table');
+
+                        if(((temp.search(/\s/)!==-1)||!temp)){
+                            alert('빈 칸이 있는지 확인해 보세요.');
+                            return;
+                        }                 
+                        
+                        var result = true;
+
+                        for(var i=0; i<tbl.rows.length; i++){   
+                    
+                        if(temp.toLocaleLowerCase() === tbl.rows[i].querySelector('.td2').textContent.toLowerCase()) {
+                            alert('ID가 중복 됩니다. 다른 ID로 설정하여 주세요.');
+                            result = false;
+                            return;
+                        }
+                        };                        
+
+                        if (result) {
+                            if(confirm('ID를 바꾸시겠습니까?')) {
+                                td_arr2.innerHTML=temp;
+                                return;
+                            }
+                            else return;
+                        }
+                        
+                    });           
+                    
+                    td_arr7.appendChild(but); 
+                    tr_arr.appendChild(td_arr7);
+                                        
+                    document.querySelector('#table').appendChild(tr_arr);       
+                              
+                    
+                });
+            }
+        }
+        xhr.send();
+    }  
+
+    function all_del(){
+        var list = document.querySelector('#table').querySelectorAll('tr');
+        //console.log(list);
+        if(list != null && list.length > 0) {
+            for (var i=0; i<list.length; i++) {    
+                var checkbox = list[i].childNodes[0].childNodes[0];
+                console.log(checkbox.checked);
+                if(checkbox.checked){
+                    list[i].parentNode.removeChild(list[i]);
+                } 
+            }
+        }
+    }
+        
+    function all_check(e){
+        var list = document.querySelector('#table').querySelectorAll('tr input[class=checkclass]');
+        if(list != null && list.length > 0) {
+            for (var i=0; i<list.length; i++) {    
+                list[i].checked = e.checked;
+                if(list[i].disabled)
+                    list[i].checked = false;
+            }
+        }
+     }
+        
+                       
+    function added(){
+        
+        //1. 저장할 데이터를 구성한다.
+        var IDtemp = document.getElementById('input1').value;
+        var Nametemp = document.getElementById('input2').value;
+        var Typetemp = document.getElementById('input3').value;
+        var Radiotemp = 0;
+        
+        var radiobtn = document.getElementsByName('Yn');
+        var radiobtnchk = 0;
+        for(var nIndex=0; nIndex<radiobtn.length; nIndex++){
+            if(radiobtn[nIndex].checked) Radiotemp = radiobtn[nIndex].value;
+            radiobtnchk++;
+        }
+
+/*      console.log(IDtemp);
+        console.log(Nametemp);
+        console.log(Typetemp);
+        console.log(Radiotemp); */
+         
+        var tbl=document.getElementById('table');
+        
+        console.log(tbl);
+        console.log(tbl.rows[0].querySelector('.td2').textContent);
+        console.log(tbl.rows[1].querySelector('.td2').textContent);
+        
+        // 2. 벨리데이션 체크를 한다.        
+        if(!(IDtemp&&Nametemp)) {
+            alert('ID 혹은 Name을 입력해 주세요.');
+            return;
+        }
+        if((IDtemp.search(/\s/)!==-1)||(Nametemp.search(/\s/)!==-1)) {
+            alert('빈 칸이 없게 해 주세요.');
+            return;
+        }
+        
+        var result = true;
+        for(var i=0; i<tbl.rows.length; i++){                
+            if(IDtemp.toLocaleLowerCase() === tbl.rows[i].querySelector('.td2').textContent.toLowerCase()) {
+                alert('ID가 중복 됩니다. 다른 ID로 설정하여 주세요.');
+                result = false;
+                return;
+            }
+        }
+        
+        if (result) {
+                                   
+            var tr_arr=document.createElement('tr');                
+
+            var td_arr1=document.createElement('td');
+            checkElement=document.createElement('input');
+            checkElement.setAttribute('type', 'checkbox');
+            checkElement.className='checkclass'
+            td_arr1.appendChild(checkElement);
+            tr_arr.appendChild(td_arr1);
+
+            var td_arr2=document.createElement('td');
+            td_arr2.className='td2'
+            td_arr2.innerText=IDtemp;
+            tr_arr.appendChild(td_arr2); 
+
+            var td_arr3=document.createElement('td');
+            td_arr3.innerText=Nametemp;
+            tr_arr.appendChild(td_arr3); 
+
+            var td_arr4=document.createElement('td');
+            td_arr4.innerText=Typetemp;
+            tr_arr.appendChild(td_arr4); 
+
+            var td_arr5=document.createElement('td');
+            YnElement=document.createElement('input');
+            YnElement.setAttribute('type', 'checkbox');
+            YnElement.id='td5'
+            YnElement.className='Ynclass'
+            if(Radiotemp == 'N'){
+                checkElement.disabled=true;    
+                YnElement.disabled=true;
+            }
+            else {
+                YnElement.disabled=false;
+                YnElement.checked=true;
+            }
+
+            td_arr5.appendChild(YnElement);                    
+            tr_arr.appendChild(td_arr5);
+
+           //6td 수정 ID
+            var td_arr6=document.createElement('td');
+            input=document.createElement('input');
+            input.setAttribute('type', 'text');
+            input.setAttribute('style', 'width:100px')
+            input.className='inputbox';
+            input.id='td66';
+            input.value=IDtemp;
+            td_arr6.appendChild(input); 
+            tr_arr.appendChild(td_arr6);
+
+            //7td 수정 버튼 생성                                        
+            var td_arr7=document.createElement('td');
+            but=document.createElement('input');
+            but.setAttribute('type', 'button');
+            but.setAttribute('style', 'width:50px');
+            but.value = '수정';
+            but.className='but';
+            td_arr7.id='td77';
+
+            but.addEventListener('click', function(e){ // click 이벤트 발생시, 두번째 인자의 함수가 실행
+                var temp = this.parentNode.parentNode.childNodes[5].querySelector('input[id=td66]').value;
+                if(((temp.search(/\s/)!==-1)||!temp)){
+                    alert('빈 칸이 있는지 확인해 보세요.');
+                    return;
+                }             
+                
+                var result = true;
+
+                for(var i=0; i<tbl.rows.length; i++){   
+                    if(temp.toLocaleLowerCase() === tbl.rows[i].querySelector('.td2').textContent.toLowerCase()) {
+                        alert('ID가 중복 됩니다. 다른 ID로 설정하여 주세요.');
+                        result = false;
+                        return;
+                    }
+                };            
+                
+                    if (result) {
+                        if(confirm('ID를 바꾸시겠습니까?')) {
+                            td_arr2.innerHTML=temp;
+                            return;
+                        }
+                        else return;
+                    }
+            });
+
+            td_arr7.appendChild(but); 
+            tr_arr.appendChild(td_arr7);
+            
+            document.querySelector('#table').appendChild(tr_arr); 
+    }
+        
+            checkElement.addEventListener('click', function(event){ // click 이벤트 발생시, 두번째 인자의 함수가 실행
+            //체크박스 체크 여부 
+            var checkList = document.querySelector('#table').querySelectorAll('tr input[class=checkclass]');                   
+            var checkLength = 0;
+            var uncheckList = 0;
+            for (var nIndex=0; nIndex < checkList.length; nIndex++) {
+                if (checkList[nIndex].checked) checkLength++;
+                if (checkList[nIndex].disabled) uncheckList++;                       
+            }
+
+            var allLength = checkList.length-uncheckList
+
+            if (allLength == checkLength) document.querySelector('#allCheck').checked = true;
+            else document.querySelector('#allCheck').checked = false;
+            });
+       
+        document.querySelector('#allCheck').checked = false;
+        }
+    
+    function initial(){
+        document.getElementById('input1').value = '';
+        document.getElementById('input2').value = '';
+        document.getElementById('input3').value = 'A-type';
+        document.getElementById('input4').checked = 'false';
+    } 
+        
+    function edit(){
+        var tbl=document.getElementById('table');
+        for(var i=0; i<tbl.rows.length; i++) {
+            var temp1 = tbl.rows[i].querySelector('#td66').value; // 수정 ID값
+            //console.log(temp1);
+            
+            for(var j=0; j<tbl.rows.length; j++) { 
+            var temp2 = tbl.rows[j].querySelector('.td2').textContent;// 데이터 ID값
+            //console.log(temp2);
+            
+            var val1 = true;
+            if(temp1.toLocaleLowerCase()==temp2.toLowerCase()){
+                alert('기존의 ID와 중복 되는 ID가 있습니다.');
+                val1 = false;
+                return;
+            }   
+            }
+        }
+            
+        var val2 = true;
+        if(val1) {
+            for(var k=0; k<tbl.rows.length; k++) {
+                var temp1 = tbl.rows[k].querySelector('#td66').value;
+                console.log(temp1);
+                
+                for(var h=k+1; h<tbl.rows.length; h++) {
+                    var temp2 = tbl.rows[h].querySelector('#td66').value;     
+                    console.log(temp2);
+                    
+                    if(temp1.toLocaleLowerCase()==temp2.toLowerCase()){
+                        alert('수정하는 ID 값들의 대한 중복 여부룰 확인해 주세요.');
+                        val2 = false;
+                        return;
+                    }
+                }
+            }
+        }
+                    
+        if(val2) {
+            for(var l=0; l<tbl.rows.length; l++) {
+                var temp1 = tbl.rows[l].querySelector('#td66').value; // 수정 ID값
+                var temp2 = tbl.rows[l].querySelector('.td2');
+                temp2.innerHTML = temp1;
+            }
+        }
+    }
+                    
+    /*function data_out(){
+        var infoArray = new Array();
+        var max = document.querySelector('#table').querySelectorAll('tr input[class=checkclass]');
+        
+        for(var nIndex=0; nIndex<max.length; nIndex++){            
+            var personInfo = new Object();
+
+            personInfo.id = document.getElementById('td22'+[nIndex]).innerText;
+            personInfo.name = document.getElementById('td33'+[nIndex]).innerText;
+            personInfo.type = document.getElementById('td44'+[nIndex]).innerText;
+
+            if(document.getElementById('td5').value=='Y') personInfo.delYn = 'Y';
+            else personInfo.delYn = 'N';
+
+            console.log(personInfo);
+
+            infoArray = personInfo;
+            
+        }
+    }*/
+
+    </script>
+    
+</head>
+ 
+<body>
+    <h2>코드 관리</h2><br/>
+    <b>코드 </b><input type='text' id='input1' style='width: 100px;'> &emsp; <b>코드명 </b><input type='text' id='input2' style='width: 100px;'> <br/><br/>
+   
+    <br/><br/><input type='button' value='코드 저장' onclick='added()'>&emsp;&emsp;&emsp;<input type='button' value='양식 초기화' onclick='initial()'>
+    <br/><br/><HR width="80%" align="left" style="color:black; background-color:black; height:3px; border:none" />
+    
+    <br/><input type="button" value="선택삭제" onclick="all_del()"> &emsp;&nbsp;<input type="button" value="전체 수정" onclick="edit()">
+     <!--<input type="button" value="데이터 추출" onclick="data_out()">--><br/><br/>
+
+     <table style=text-align:center; border=2px bordercolor=grey>
+        <thead id='data-chk'>
+            <tr>
+                <th><input type="checkbox" id="allCheck" onclick="all_check(this)"></th>
+                <th width=90px;> ID</th>
+                <th width=90px;> Name</th>
+                <th width=90px;> 형태</th>
+                <th width=80px;> 삭제여부</th>
+                <th width=80px;> 수정 ID값</th>
+                <th width=80px;> 변경</th>
+            </tr>
+        </thead>
+        <tbody id="table" >           
+        </tbody>
+    </table>    
+</body>
+</html>

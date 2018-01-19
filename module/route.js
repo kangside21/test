@@ -13,11 +13,14 @@
             res.render('index1.html');
         });
 
+        app.get('/test',function(req,res){
+            res.render('Ajax.html');
+        });
+
         app.get('/search',function(req,res){
-            console.log(req.params);
             console.log(req.query);
 
-            db.any("SELECT * FROM CODE WHERE CODE='A'")
+            db.any("SELECT * FROM CODE ")
             .then(function (result) {
                 res.status(200).json(result);
             })
@@ -28,8 +31,11 @@
         });
 
         app.post('/search11',function(req,res){
+
+            var data = req.body;
+
             console.log(req.body);
-            db.any("SELECT * FROM CODE WHERE CODE='A'")
+            db.any("INSERT MENBER(ASD, QWE")
             .then(function (result) {
                 res.status(200).json(result);
             })
