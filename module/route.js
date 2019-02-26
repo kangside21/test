@@ -17,7 +17,9 @@
             console.log(req.params);
             console.log(req.query);
 
-            db.any("SELECT * FROM CODE WHERE CODE='A'")
+            console.log(db);
+
+            db.any("SELECT * FROM TB_NOTICE")
             .then(function (result) {
                 res.status(200).json(result);
             })

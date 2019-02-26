@@ -21,7 +21,9 @@
       params.code = "A";
       params.name = "테스트";
 
-      common.ajax('/search', params, "get");
+      common.ajax('/search', params, "get").then(function (result) {
+          console.log(result);
+      });
       
     });
   })();
