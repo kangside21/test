@@ -5,6 +5,28 @@
     * DB 모듈 Import
     ​*/
     var db = require('../db');
+    /*
+    * Common Js Import
+    ​*/
+    var common = require('../resources/js/common');
+
+    // xml parser
+    var sqlXml = {};
+    var fs = require('fs')
+    var xml2js = require('xml2js');
+    var parser = new xml2js.Parser();
+    fs.readFile('./resources/mapper/sql.xml', 'utf-8', function(err, data) {
+        parser.parseString(data, function (err, result) {
+            if (result.mapper != null && result.mapper.sql != null && result.mapper.sql.length > 0) {
+                for (var i in result.mapper.sql) {
+                    if (result.mapper.sql[i].$ != null && 
+                        (typeof result.mapper.sql[i].$.id != "undefined" && result.mapper.sql[i].$.id != null && String(result.mapper.sql[i].$.id) !=  "")) {
+                        sqlXml[result.mapper.sql[i].$.id] = result.mapper.sql[i]._;
+                    }
+                }
+            }
+        });
+    });
 
     /*
     * Service Module 명시
@@ -22,7 +44,6 @@
                 })
                 .catch(function (error) {
                     reject(error);
-                    res.status(400).json(error);
                 });
             });
         };
@@ -38,7 +59,6 @@
                 })
                 .catch(function (error) {
                     reject(error);
-                    res.status(400).json(error);
                 });
             });
         };
@@ -48,13 +68,13 @@
         ​*/
         var search3 = function(params) {
             return new Promise(function (resolve, reject) {
-                db.any("SELECT * FROM TB_NOTICE WHERE NOTICE_CONTENT LIKE '%' || ${content} || '%'", params)
+                db.any(sqlXml.findNoticeContent, params)
                 .then(function (result) {
                     resolve(result);
+                    console.log(sqlXml.findNoticeContent);
                 })
                 .catch(function (error) {
                     reject(error);
-                    res.status(400).json(error);
                 });
             });
         };

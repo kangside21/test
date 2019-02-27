@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapper>
+	
+	<sql id="findNoticeContent">
+		SELECT * FROM TB_NOTICE WHERE NOTICE_CONTENT LIKE '%' || ${content} || '%'
+	</sql>
+
+</mapper>

@@ -1,7 +1,6 @@
 'use strict';
-
 var common = common || function(g,i) {
-    
+
     var ajax = function(url, params, method) {
         return new Promise(function (resolve, reject) {
             if (isNull(url) ||
@@ -83,9 +82,10 @@ var common = common || function(g,i) {
 
     return {
         ajax : ajax,
+        sql : sql,
         isNull : isNull,
         isNotNull : isNotNull,
         trim : trim
     };
-
+    
 }();
