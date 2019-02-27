@@ -19,8 +19,10 @@
         parser.parseString(data, function (err, result) {
             if (result.mapper != null && result.mapper.sql != null && result.mapper.sql.length > 0) {
                 for (var i in result.mapper.sql) {
-                    if (result.mapper.sql[i].$ != null && 
-                        (typeof result.mapper.sql[i].$.id != "undefined" && result.mapper.sql[i].$.id != null && String(result.mapper.sql[i].$.id) !=  "")) {
+                    if ((result.mapper.sql[i].$ != null && 
+                        (typeof result.mapper.sql[i].$.id != "undefined" && result.mapper.sql[i].$.id != null && String(result.mapper.sql[i].$.id) !=  ""))
+                        && (result.mapper.sql[i]._ != null && 
+                            (typeof result.mapper.sql[i]._ != "undefined" && result.mapper.sql[i]._ != null && String(result.mapper.sql[i]._) !=  ""))) {
                         sqlXml[result.mapper.sql[i].$.id] = result.mapper.sql[i]._;
                     }
                 }
@@ -71,7 +73,6 @@
                 db.any(sqlXml.findNoticeContent, params)
                 .then(function (result) {
                     resolve(result);
-                    console.log(sqlXml.findNoticeContent);
                 })
                 .catch(function (error) {
                     reject(error);
