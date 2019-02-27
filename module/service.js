@@ -5,10 +5,6 @@
     * DB 모듈 Import
     ​*/
     var db = require('../db');
-    /*
-    * Common Js Import
-    ​*/
-    var common = require('../resources/js/common');
 
     // xml parser
     var sqlXml = {};
