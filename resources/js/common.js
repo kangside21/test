@@ -82,7 +82,6 @@ var common = common || function(g,i) {
 
     return {
         ajax : ajax,
-        sql : sql,
         isNull : isNull,
         isNotNull : isNotNull,
         trim : trim
