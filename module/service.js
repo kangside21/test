@@ -7,7 +7,7 @@
     var db = require('../db');
 
     // xml parser
-    var sqlXml = {};
+    var sql = {};
     var fs = require('fs')
     var xml2js = require('xml2js');
     var parser = new xml2js.Parser();
@@ -19,7 +19,7 @@
                         (typeof result.mapper.sql[i].$.id != "undefined" && result.mapper.sql[i].$.id != null && String(result.mapper.sql[i].$.id) !=  ""))
                         && (result.mapper.sql[i]._ != null && 
                             (typeof result.mapper.sql[i]._ != "undefined" && result.mapper.sql[i]._ != null && String(result.mapper.sql[i]._) !=  ""))) {
-                        sqlXml[result.mapper.sql[i].$.id] = result.mapper.sql[i]._;
+                        sql[result.mapper.sql[i].$.id] = result.mapper.sql[i]._;
                     }
                 }
             }
@@ -66,7 +66,7 @@
         ​*/
         var search3 = function(params) {
             return new Promise(function (resolve, reject) {
-                db.any(sqlXml.findNoticeContent, params)
+                db.any(sql.findNoticeContent, params)
                 .then(function (result) {
                     resolve(result);
                 })
