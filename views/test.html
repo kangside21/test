@@ -38,7 +38,7 @@
     document.querySelector("#search3").addEventListener("click", function(e) {
       var params = {};
       params.title = "장동복";
-      params.content = "몰라";
+      params.content = "휴";
 
       common.ajax('/search3', params, "post").then(function (result) {
         console.log(result);
