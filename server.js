@@ -16,8 +16,8 @@
   // resources 접근 (css, js, img)
   app.use(express.static('resources'));
 
-  // module file 
-  require('./module/route')(app);
+  // api module file 
+  require('./module/api')(app);
 
   // server start
   var server = app.listen(3000, function(){
