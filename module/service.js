@@ -51,7 +51,7 @@
         ​*/
         var search2 = function(params) {
             return new Promise(function (resolve, reject) {
-                db.any("SELECT * FROM TB_NOTICE WHERE NOTICE_TITLE = ${title}", params)
+                db.any(sql.findNoticeTitle, params)
                 .then(function (result) {
                     resolve(result);
                 })

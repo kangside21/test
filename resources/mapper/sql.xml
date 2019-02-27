@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <mapper>
 	
+	<sql id="findNoticeTitle">
+		SELECT NOTICE_SEQ
+		      ,NOTICE_TITLE
+			  ,NOTICE_CONTENT 
+		FROM TB_NOTICE 
+		WHERE NOTICE_TITLE = ${title}
+	</sql>
+
 	<sql id="findNoticeContent">
 		SELECT * FROM TB_NOTICE WHERE NOTICE_CONTENT LIKE '%' || ${content} || '%'
 	</sql>
