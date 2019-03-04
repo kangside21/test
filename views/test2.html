@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="js/common.js" charset="utf-8"></script>
+    <style type="text/css">
+
+    </style>
+    <script>
+
+    </script>
+    <title>Main</title>
+  </head>
+  <body>
+    테스트용 화면 앞으로 이런 화면들로 무언가를 만들어볼거에요.
+    <button id="search">DB 조회</button>
+    <button id="search2">DB 조회2</button>
+    <button id="search3">DB 조회3</button>
+  </body>
+
+  <script>
+  (function () {
+    document.querySelector("#search").addEventListener("click", function(e) {
+      common.ajax('/search', null, "get").then(function (result) {
+          console.log(result);
+      });
+    });
+
+    document.querySelector("#search2").addEventListener("click", function(e) {
+      var params = {};
+      params.title = "장동복";
+      params.content = "몰라";
+
+      common.ajax('/search2', params, "get").then(function (result) {
+        console.log(result);
+      });
+
+    });
+
+    document.querySelector("#search3").addEventListener("click", function(e) {
+      var params = {};
+      params.title = "장동복";
+      params.content = "휴";
+
+      common.ajax('/search3', params, "post").then(function (result) {
+        console.log(result);
+      });
+
+    });
+  })();
+  </script>
+
+</html>

@@ -19,6 +19,13 @@
         });
 
         /*
+       * test.html 화면 호출
+       ​*/
+        app.get('/test2',(req,res) => {
+            res.render('test2.html')
+        });
+
+        /*
         * GET
         * 조회1
         ​*/

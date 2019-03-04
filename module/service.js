@@ -66,6 +66,11 @@
         ​*/
         var search3 = function(params) {
             return new Promise(function (resolve, reject) {
+
+                //any : list
+                //one : object
+                //none : insert, update, delete
+
                 db.any(sql.findNoticeContent, params)
                 .then(function (result) {
                     resolve(result);
