@@ -7,11 +7,14 @@
 
     </style>
     <script>
-
+      function test1() {
+        console.log("start");
+        alert("시작이야");
+      }
     </script>
     <title>Main</title>
   </head>
-  <body>
+  <body onload="test1()">
     테스트용 화면 앞으로 이런 화면들로 무언가를 만들어볼거에요.
     <button id="search">DB 조회</button>
     <button id="search2">DB 조회2</button>
@@ -21,9 +24,7 @@
   <script>
   (function () {
     document.querySelector("#search").addEventListener("click", function(e) {
-      common.ajax('/search', null, "get").then(function (result) {
-          console.log(result);
-      });
+      test1();
     });
 
     document.querySelector("#search2").addEventListener("click", function(e) {
