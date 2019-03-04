@@ -5,11 +5,11 @@
   // db setting
   var pgp = require("pg-promise")({promiseLib: promise});
   var config = {
-    host: '192.168.1.85',
+    host: 'xenoimpact.com',
     port: 5432,
-    database: 'test',
-    user: 'test',
-    password: '1234'
+    database: 'notesdev',
+    user: 'notesdev',
+    password: '@shcmdev0'
   };
   //var conString = "postgres://test:1234@192.168.1.85:5432/test";
   var db = pgp(config);

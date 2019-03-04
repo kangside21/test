@@ -36,13 +36,17 @@
         ​*/
         var search = function() {
             return new Promise(function (resolve, reject) {
-                db.any("SELECT * FROM TB_NOTICE")
+
+
+                db.any("SELECT * FROM JANG_DB")
                 .then(function (result) {
                     resolve(result);
                 })
                 .catch(function (error) {
                     reject(error);
                 });
+
+
             });
         };
 

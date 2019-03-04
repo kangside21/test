@@ -9,14 +9,44 @@
     <title>Main</title>
   </head>
   <body>
-    테스트용 화면 앞으로 이런 화면들로 무언가를 만들어볼거에요.
-    <button id="search">DB 조회</button>
-    <button id="search2">DB 조회2</button>
-    <button id="search3">DB 조회3</button>
+  <table style="width:100%">
+    <tr>
+      <td>id</td>
+      <td><input type = "text" id="userId"><button id="check" onclick="idCheck()" >id check</button></td>
+    </tr>
+    <tr>
+      <td>pss</td>
+      <td><input type = "text"></td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td><input type = "text"></td>
+    </tr>
+    <tr>
+      <td>phone</td>
+      <td><input type = "text"></td>
+    </tr>
+    <tr>
+      <td>email</td>
+      <td><input type = "text"></td>
+    </tr>
+    <tr>
+      <td>birthday</td>
+      <td><input type = "text"></td>
+    </tr>
+
+  </table>
   </body>
 
   <script>
-  (function () {
+  function idCheck(){
+    var userId = document.getElementById("userId").value;
+    console.log(userId);
+
+  }
+
+
+  /*(function () {
     document.querySelector("#search").addEventListener("click", function(e) {
       common.ajax('/search', null, "get").then(function (result) {
           console.log(result);
@@ -44,7 +74,7 @@
       });
 
     });
-  })();
+  })();*/
   </script>
 
 </html>
